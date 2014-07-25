@@ -1,0 +1,26 @@
+<html lang="en" ng-app="coinmob">
+  <head>
+    <script>
+      window.coinmob = {};
+    </script>
+    <script type="text/javascript" src="http://dev.openblock.com:9001/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/bitcore.js"></script>
+    <script type="text/javascript" src="js/lib/sjcl.js"></script>
+    <script type="text/javascript" src="js/lib/skiplist.js"></script>
+
+    <script type="text/javascript" src="js/coinmob/config.js"></script>
+    <script type="text/javascript" src="js/coinmob/socket.js"></script>
+    <script type="text/javascript" src="js/coinmob/blockchain.js"></script>
+    <script type="text/javascript" src="js/coinmob/storage.js"></script>
+    <script type="text/javascript" src="js/coinmob/wallet.js"></script>
+
+    <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="js/coinmob.app.js"></script>
+    <title>coinmob</title>
+  </head>
+  <body>
+    <div ng-view></div>
+  </body>
+</html>

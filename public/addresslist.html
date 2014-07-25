@@ -1,0 +1,13 @@
+<h2>Receive addresses</h2>
+<ul>
+  <li ng-repeat="addr in addresses">
+    {{ addr.toString() }}
+  </li>
+</ul>
+
+<a href="#" new-address>Add addresses</a>
+<select id="netnames">
+  <option ng-repeat="netname in netnames" value="{{ netname }}">
+    {{ netname }}
+  </option>
+</select>

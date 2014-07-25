@@ -1,0 +1,26 @@
+{
+  "name": "coinmob",
+  "version": "0.0.1",
+  "homepage": "https://github.com/haobtc/coinmob",
+  "authors": [
+    "Zeng Ke <superisaac.ke@gmail.com>"
+  ],
+  "description": "coins wallet for mobile devices",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "*",
+    "angular-route": "~1.2.19",
+    "angular-resource": "~1.2.19",
+    "angular-animate": "~1.2.19"
+  }
+}
