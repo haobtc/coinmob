@@ -113,7 +113,9 @@ SkipList.prototype.getAt = function(index) {
   if(index < 0) return;
   var level = this.root.skips.length - 1;
   if(level < 0) return;
-  for(; level>=0 && this.root.skips[level].cnt > index;level--) {}
+  console.info(this.root.skips);
+  for(; level>0 && this.root.skips[level].cnt > index;level--) {}
+  console.info('level', level);
   var sumCnt = this.root.skips[level].cnt;
   var p = this.skip(this.root.skips[level].next,
 		    index - this.root.skips[level].cnt,
@@ -249,10 +251,14 @@ SkipList.prototype.head = function() {
 };
 
 SkipList.prototype.forEach = function(callback) {
+  if(this.root.skips.length <= 0) {
+    return;
+  }
   var p = this.root.skips[0].next;
   var i = 0;
   while(this.valid(p)) {
-    callback(p.key, p.value, i++, p.skips);
+    var r = callback(p.key, p.value, i++);
+    if(r === false) break;
     p = p.skips[0].next;
   }
 };
@@ -285,7 +291,7 @@ SkipList.compareArray = function(arr, brr) {
   return 0;
 };
 
-/*if(module && module.exports) {
+if(typeof module != 'undefined' && module.exports) {
   module.exports = SkipList;
-}*/
+}
 

@@ -1,7 +1,7 @@
 <h2>Receive addresses</h2>
 <ul>
-  <li ng-repeat="addr in addresses">
-    {{ addr.toString() }}
+  <li ng-repeat="a in addresses">
+    {{ a.addr.toString() }}({{ a.balance.toString() }})
   </li>
 </ul>
 

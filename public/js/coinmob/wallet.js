@@ -44,8 +44,63 @@ function Wallet(netname) {
     this.storage.storeWallet(this.walletData());
     return addr;
   };
+
+  // FIXME: a test method, it should be removed during production
+
+
+  this.getAllKeys = function(password) {
+    var self = this;
+    var keys = decryptKeys(password);
+    console.info('keys', keys, self.netname);
+    var foundKeys = keys.map(function(key) {
+      var buf = new bitcore.Buffer(key.private, 'hex');
+      var pk = new bitcore.PrivateKey(bitcore.networks[self.netname].privKeyVersion, buf, true);
+      return pk.as('base58');
+    });
+    return foundKeys;
+  };
+
   this.loadWallet();
 }
+
+Wallet.prototype.sendTx = function(tx) {
+  rpcCall('sendtx', [this.netname, tx.serialize().toString('hex')], function(r) {
+    console.info('sendTx return', r);
+  });
+};
+
+Wallet.prototype.createTx = function(password, addr, amount, fee) {
+  var required = new bitcore.Bignum(amount);
+  required = required.plus(fee);
+  var sumInputAmount = new bitcore.Bignum(0);
+  var inputUnspent = [];
+  this.unspent.forEach(function(k, uspt) {
+    sumInputAmount = sumInputAmount.plus(new bitcore.Bignum(uspt.amount));
+    inputUnspent.push(uspt);
+    if(sumInputAmount.comparedTo(required) >= 0) {
+      return false;
+    }
+  });
+  //var addrs = inputUnspent.map(function(uspt) {return uspt.address;});
+  var keys = this.getAllKeys(password);
+  console.info('keys', keys);	       
+  var outputs = [{'address': addr.toString(), 'amount': amount}];
+  var opts = {
+    remainderOut: {
+      address: inputUnspent[0].address
+    },
+    fee: fee,
+    spendUnconfirmed: true,
+  };
+  var builder = new bitcore.TransactionBuilder(opts)
+    .setUnspent(inputUnspent)
+    .setOutputs(outputs)
+    .sign(keys);
+  
+  console.info('fully signed', builder.isFullySigned(), builder.inputsSigned, inputUnspent);
+  var tx = builder.build();
+  return tx;
+};
 
 Wallet.prototype.loadWallet = function() {
   var self = this;
@@ -65,9 +120,6 @@ Wallet.prototype.addressDict = function() {
   this.addresses.forEach(function(addr) {
     self._addrDict[addr.toString()] = true;
   });
-/*  if(this.netname == 'dogecoin') {
-    this._addrDict['DJhFBMaUNBS5i5tbFyMFnXpwbaEM1RzUE4'] = true;
-  } */
   return this._addrDict;
 };
 
@@ -150,11 +202,13 @@ Wallet.prototype.walletData = function() {
 	  addresses: this.addresses};
 };
 
+
 /**
   * WalletManager
   */
 function WalletManager() {
   var self = this;
+  this.readyFlag = false;
   coinmob.config.supportedNetnames.forEach(function(netname) {
     self[netname] = new Wallet(netname);
   });
@@ -180,6 +234,11 @@ function WalletManager() {
       arr.forEach(function(uspt) {
 	self[uspt.network].addUnspent(uspt);
       });
+      if(!self.readyFlag) {
+	$(document).trigger('walletReady');
+	self.readyFlag = true;
+      }
+      self.readyHook = true;
     } catch(e) {
       console.error(e.message, e.stack);
       throw e;
@@ -218,6 +277,15 @@ WalletManager.prototype.eachWallet = function(cb) {
   coinmob.config.supportedNetnames.forEach(function(netname) {
     cb(self[netname]);
   });
+};
+
+
+WalletManager.prototype.ready = function(cb) {
+  if(this.readyFlag) {
+    cb();
+  } else {
+    $(document).bind('walletReady', cb);
+  }
 };
 
 coinmob.walletman = new WalletManager();

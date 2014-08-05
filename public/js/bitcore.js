@@ -3201,7 +3201,7 @@ Address.prototype.isScript = function() {
 module.exports = require('soop')(Address);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":140,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":80,"soop":125}],"YL/05i":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":141,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":80,"soop":125}],"YL/05i":[function(require,module,exports){
 (function (Buffer){
 var Point = require('./Point'),
   Key = require('./Key'),
@@ -3320,7 +3320,7 @@ Armory.deriveChaincode = function (root) {
 module.exports = Armory;
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","buffer":80}],"./lib/Armory":[function(require,module,exports){
+},{"../util":141,"./Key":"ALJ4PS","./Point":"6tXgqr","buffer":80}],"./lib/Armory":[function(require,module,exports){
 module.exports=require('YL/05i');
 },{}],"./lib/BIP32":[function(require,module,exports){
 module.exports=require('Dad1wf');
@@ -3665,7 +3665,7 @@ function u64(f) {return uint(f,8);}
 module.exports = require('soop')(BIP32);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":140,"./Base58":"6VqyzY","./Key":"ALJ4PS","./Point":"6tXgqr","./SecureRandom":"p4SiC2","bignum":58,"buffer":80,"soop":125}],"./lib/Base58":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":141,"./Base58":"6VqyzY","./Key":"ALJ4PS","./Point":"6tXgqr","./SecureRandom":"p4SiC2","bignum":58,"buffer":80,"soop":125}],"./lib/Base58":[function(require,module,exports){
 module.exports=require('6VqyzY');
 },{}],"6VqyzY":[function(require,module,exports){
 (function (Buffer){
@@ -3787,9 +3787,7 @@ exports.encode = base58.encode;
 exports.decode = base58.decode;
 
 }).call(this,require("buffer").Buffer)
-},{"bignum":58,"buffer":80,"crypto":84}],"./lib/Block":[function(require,module,exports){
-module.exports=require('pJEQEB');
-},{}],"pJEQEB":[function(require,module,exports){
+},{"bignum":58,"buffer":80,"crypto":84}],"pJEQEB":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -3864,10 +3862,13 @@ Block.prototype.parse = function parse(parser, headerOnly) {
   }
 };
 
-Block.prototype.calcHash = function calcHash() {
+Block.prototype.calcHash = function calcHash(hashFunc) {
   var header = this.getHeader();
-
-  return util.twoSha256(header);
+  if(hashFunc == 'x11') {
+    return util.x11Digest(header);
+  } else {
+    return util.twoSha256(header);
+  }
 };
 
 Block.prototype.checkHash = function checkHash() {
@@ -4093,7 +4094,9 @@ function getStandardizedObject(txs)
 module.exports = require('soop')(Block);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"../util/error":139,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":58,"binary":69,"buffer":80,"buffertools":"fugeBw","soop":125,"step":126}],"./lib/Bloom":[function(require,module,exports){
+},{"../util":141,"../util/error":140,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":58,"binary":69,"buffer":80,"buffertools":"fugeBw","soop":125,"step":126}],"./lib/Block":[function(require,module,exports){
+module.exports=require('pJEQEB');
+},{}],"./lib/Bloom":[function(require,module,exports){
 module.exports=require('KifRG4');
 },{}],"KifRG4":[function(require,module,exports){
 var MAX_BLOOM_FILTER_SIZE = 36000;  // bytes
@@ -4787,7 +4790,7 @@ Connection.prototype.parseMessage = function (command, payload) {
 module.exports = require('soop')(Connection);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":140,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./SecureRandom":"p4SiC2","./Transaction":"LJhYtm","buffer":80,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":89,"socks5-client":118,"soop":125}],"./lib/Curve":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":141,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./SecureRandom":"p4SiC2","./Transaction":"LJhYtm","buffer":80,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":89,"socks5-client":118,"soop":125}],"./lib/Curve":[function(require,module,exports){
 module.exports=require('Ynul1S');
 },{}],"Ynul1S":[function(require,module,exports){
 (function (Buffer){
@@ -4892,7 +4895,7 @@ Electrum.prototype.generateChangePubKey = function (sequence) {
 module.exports = Electrum;
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","bignum":58,"buffer":80,"buffertools":"fugeBw"}],"./lib/Electrum":[function(require,module,exports){
+},{"../util":141,"./Key":"ALJ4PS","./Point":"6tXgqr","bignum":58,"buffer":80,"buffertools":"fugeBw"}],"./lib/Electrum":[function(require,module,exports){
 module.exports=require('hdzBvq');
 },{}],"CBDCgz":[function(require,module,exports){
 (function (Buffer){
@@ -4940,7 +4943,7 @@ Message.magicHash = function(str) {
 module.exports = require('soop')(Message);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"./Key":"ALJ4PS","buffer":80,"soop":125}],"./lib/Message":[function(require,module,exports){
+},{"../util":141,"./Key":"ALJ4PS","buffer":80,"soop":125}],"./lib/Message":[function(require,module,exports){
 module.exports=require('CBDCgz');
 },{}],"./lib/Opcode":[function(require,module,exports){
 module.exports=require('Zm7/h9');
@@ -5203,7 +5206,7 @@ function PeerManager(config) {
   this.timer = null;
 
   this.peers = [];
-  this.peerLimit = 64;
+  this.peerLimit = 100;
   this.pool = [];
   this.connections = [];
   this.isConnected = false;
@@ -5903,7 +5906,7 @@ SINKey.prototype.storeObj = function() {
 
 module.exports = require('soop')(SINKey);
 
-},{"../util":140,"../util/time":143,"./Key":"ALJ4PS","./SIN":"tBM27q","soop":125}],"./lib/SINKey":[function(require,module,exports){
+},{"../util":141,"../util/time":144,"./Key":"ALJ4PS","./SIN":"tBM27q","soop":125}],"./lib/SINKey":[function(require,module,exports){
 module.exports=require('EyghZQ');
 },{}],"hQ0t76":[function(require,module,exports){
 (function (Buffer){
@@ -7688,7 +7691,7 @@ ScriptInterpreter.prototype.isCanonicalSignature = function(sig) {
 module.exports = require('soop')(ScriptInterpreter);
 
 }).call(this,require("/Users/zengke/works/github/haobtc/explorer/alliances/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../config":"4itQ50","../util":140,"../util/log":"AdF7pF","./Key":"ALJ4PS","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/zengke/works/github/haobtc/explorer/alliances/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/ScriptInterpreter":[function(require,module,exports){
+},{"../config":"4itQ50","../util":141,"../util/log":"AdF7pF","./Key":"ALJ4PS","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/zengke/works/github/haobtc/explorer/alliances/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/ScriptInterpreter":[function(require,module,exports){
 module.exports=require('Q/ZWXW');
 },{}],"./lib/Sign":[function(require,module,exports){
 module.exports=require('V3JdDp');
@@ -8466,7 +8469,7 @@ Transaction.prototype.isComplete = function() {
 module.exports = require('soop')(Transaction);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../util":140,"../util/BinaryParser":"b3ZSD7","../util/error":139,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":58,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125,"step":126}],"./lib/TransactionBuilder":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util":141,"../util/BinaryParser":"b3ZSD7","../util/error":140,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":58,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125,"step":126}],"./lib/TransactionBuilder":[function(require,module,exports){
 module.exports=require('D1Ge6m');
 },{}],"D1Ge6m":[function(require,module,exports){
 (function (Buffer){
@@ -9525,7 +9528,7 @@ TransactionBuilder.prototype.merge = function(b) {
 module.exports = require('soop')(TransactionBuilder);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":140,"../util/log":"AdF7pF","./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/Wallet":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":141,"../util/log":"AdF7pF","./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/Wallet":[function(require,module,exports){
 module.exports=require('yUY4WV');
 },{}],"yUY4WV":[function(require,module,exports){
 (function (Buffer){
@@ -9666,7 +9669,7 @@ module.exports = require('soop')(Wallet);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":140,"../util/EncFile":134,"./Address":"G+CcXD","buffer":80,"fs":76,"soop":125}],"./lib/WalletKey":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":141,"../util/EncFile":135,"./Address":"G+CcXD","buffer":80,"fs":76,"soop":125}],"./lib/WalletKey":[function(require,module,exports){
 module.exports=require('wWje7g');
 },{}],"wWje7g":[function(require,module,exports){
 (function (Buffer){
@@ -9724,7 +9727,7 @@ WalletKey.prototype.fromObj = function(obj) {
 module.exports = require('soop')(WalletKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"../util/time":143,"./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","buffer":80,"soop":125}],58:[function(require,module,exports){
+},{"../util":141,"../util/time":144,"./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","buffer":80,"soop":125}],58:[function(require,module,exports){
 (function (Buffer){
 /* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
@@ -12257,7 +12260,7 @@ exports.dogecoin = {
   name: 'dogecoin',
   magic: hex('c0c0c0c0'),
   addressVersion: 0x1e,
-  privKeyVersion: 128,
+  privKeyVersion: 158,
   P2SHVersion: 0x16,
   bip32publicVersion: 0x02c8b71e,
   bip32privateVersion: 0x02c8a3e4,
@@ -12284,7 +12287,7 @@ exports.litecoin = {
   name: 'litecoin',
   magic: hex('fbc0b6db'),
   addressVersion: 0x30,
-  privKeyVersion: 121,
+  privKeyVersion: 176,
   P2SHVersion: 0x05,
   bip32publicVersion: 0x0291b71e,
   bip32privateVersion: 0x0291a3e4,
@@ -12306,6 +12309,32 @@ exports.litecoin = {
     'dnsseed.weminemnc.com'
   ],
   defaultClientPort: 9333
+};
+
+exports.darkcoin = {
+  name: 'darkcoin',
+  magic: hex('bf0c6bbd'),
+  addressVersion: 0x4C, // Starts with X
+  privKeyVersion: 204,
+  P2SHVersion: 0x05,
+  bip32publicVersion: 0x0781b71e,
+  bip32privateVersion: 0x0781a3e4,
+  blockHashFunc: 'x11',
+  genesisBlock: {
+    hash: hex('b67a40f3cd5804437a108f105533739c37e6229bc1adcab385140b59fd0f0000'),
+    merkle_root: hex('c762a6567f3cc092f0684bb62b7e00a84890b990f07cc71a6bb58d64b98e02e0'),
+    height: 0,
+    nonce: 28917698,
+    version: 1,
+    prev_hash: buffertools.fill(new Buffer(32), 0),
+    timestamp: 1390095618,
+    bits: 0x1e0ffff0
+  },
+  dnsSeeds: [
+    'dnsseed.darkcoin.io',
+    'dnsseed.ddarkcoin.qa'
+  ],
+  defaultClientPort: 9999
 };
 
 // Currently we only use bitcon testnet
@@ -27205,7 +27234,9 @@ if (typeof module !== 'undefined' && "exports" in module) {
   }
 }).call(this);
 
-},{}],"kytKTK":[function(require,module,exports){
+},{}],128:[function(require,module,exports){
+module.exports = require('bindings')('x11hash.node')
+},{"bindings":73}],"kytKTK":[function(require,module,exports){
 (function (Buffer){
 exports.patch = function(Buffers) {
   Buffers.prototype.skip = function (i) {
@@ -27390,7 +27421,7 @@ Parser.prototype.varStr = function () {
 module.exports = require('soop')(Parser);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80,"soop":125}],134:[function(require,module,exports){
+},{"buffer":80,"soop":125}],135:[function(require,module,exports){
 
 var fs = require('fs');
 var crypto = require('crypto');
@@ -27659,7 +27690,7 @@ VersionedData.prototype.payload = function(data) {
 module.exports = require('soop')(VersionedData);
 
 }).call(this,require("buffer").Buffer)
-},{"../lib/Base58":"6VqyzY","./EncodedData":"eLfUFE","buffer":80,"soop":125}],139:[function(require,module,exports){
+},{"../lib/Base58":"6VqyzY","./EncodedData":"eLfUFE","buffer":80,"soop":125}],140:[function(require,module,exports){
 
 /**
  * Used during transcation verification when a source txout is missing.
@@ -27705,7 +27736,7 @@ VerificationError.prototype.__proto__ = Error.prototype;
 
 exports.VerificationError = VerificationError;
 
-},{}],140:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = require('./util');
 },{"./util":"ACyo5H"}],"./util/log":[function(require,module,exports){
 module.exports=require('AdF7pF');
@@ -27730,7 +27761,7 @@ if(config.log) {
   module.exports = loggers[config.logger || 'normal'];
 }
 
-},{"../config":"4itQ50"}],143:[function(require,module,exports){
+},{"../config":"4itQ50"}],144:[function(require,module,exports){
 
 // current time, in seconds
 exports.curtime = function curtime()
@@ -27739,21 +27770,28 @@ exports.curtime = function curtime()
 }
 
 
-},{}],"./util/util":[function(require,module,exports){
-module.exports=require('ACyo5H');
 },{}],"ACyo5H":[function(require,module,exports){
 (function (process,Buffer){
 var crypto = require('crypto');
 var bignum = require('bignum');
 var Binary = require('binary');
+
 var Put = require('bufferput');
 var buffertools = require('buffertools');
 var jssha = require('jssha');
 var browser;
 var inBrowser = !process.versions;
+try {
+  var x11 = require('x11-hash');
+} catch(e) {
+  //console.warn('mudule x11-hash not found, use fallback');
+  var x11 = null;
+}
 if (inBrowser) {
   browser = require('../browser/vendor-bundle.js');
 }
+
+
 
 var sha256 = exports.sha256 = function(data) {
   return new Buffer(crypto.createHash('sha256').update(data).digest('binary'), 'binary');
@@ -27798,6 +27836,13 @@ var twoSha256 = exports.twoSha256 = function(data) {
 
 var sha256ripe160 = exports.sha256ripe160 = function(data) {
   return ripe160(sha256(data));
+};
+
+var x11Digest = exports.x11Digest = function(data) {
+  if(x11)
+    return x11.digest(data);
+  else
+    return sha256ripe160(data);
 };
 
 /**
@@ -28227,4 +28272,6 @@ exports.COIN = 100000000;
 var MAX_TARGET = exports.MAX_TARGET = new Buffer('00000000FFFF0000000000000000000000000000000000000000000000000000', 'hex');
 
 }).call(this,require("/Users/zengke/works/github/haobtc/explorer/alliances/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../browser/vendor-bundle.js":3,"/Users/zengke/works/github/haobtc/explorer/alliances/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"binary":69,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":84,"jssha":117}]},{},[])
+},{"../browser/vendor-bundle.js":3,"/Users/zengke/works/github/haobtc/explorer/alliances/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"binary":69,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":84,"jssha":117,"x11-hash":128}],"./util/util":[function(require,module,exports){
+module.exports=require('ACyo5H');
+},{}]},{},[])
